@@ -1,6 +1,14 @@
-# Projeto_PPW2
+# Projeto Final PPW2
 
-Web API de Scraping (raspagem de dados).
+TODO
+
+-   definir o tema
+-   criar as definições do mongodb
+-   fazer os 3 cruds em 2 apis diferentes
+-   criar validação de token (JWT)
+-   limitar os acessos da api externa
+-   hospedar na heroku
+-   documentar
 
 ## Sobre o projeto
 
