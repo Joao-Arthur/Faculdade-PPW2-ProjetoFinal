@@ -1,8 +1,14 @@
 import express from 'express';
-import bandas from './routes/bandas';
-import cursos from './routes/cursos';
-import healthcheck from './routes/healthcheck';
-import avaliableRoutes from './routes/avaliableRoutes';
+import dotenv from 'dotenv';
+import bandas from './resources/bandas';
+import cursos from './resources/cursos';
+import healthcheck from './resources/healthcheck';
+import avaliableRoutes from './resources/avaliableRoutes';
+import { setupConnection } from './connection';
+
+dotenv.config();
+setupConnection();
+
 const PORT = process.env.PORT || 8080;
 const app = express();
 
