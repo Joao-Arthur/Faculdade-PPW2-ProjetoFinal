@@ -11,7 +11,7 @@ const Album = mongoose.model(
                 required: true
             },
             releaseDate: Date,
-            trackList: [Number]
+            trackList: [String]
         },
         { timestamps: true }
     )

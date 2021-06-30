@@ -30,9 +30,11 @@ export async function setupConnection() {
             dissolution: 1970
         };
 
+        const retorno = await Band.create(beatles);
+
         const rubberSoul = {
             title: 'Rubber Soul',
-            band: 'The Beatles',
+            band: retorno._id,
             releaseDate: 1965,
             trackList: [
                 'Drive My Car',
@@ -41,7 +43,8 @@ export async function setupConnection() {
             ]
         };
 
-        await Band.create(beatles);
+        console.log(retorno);
+
         await Album.create(rubberSoul);
 
         const lista1 = await Band.find();
@@ -52,6 +55,8 @@ export async function setupConnection() {
 
         const lista3 = await Band.find();
         const lista4 = await Album.find();
+
+        console.log(lista1, lista2, lista3, lista4);
 
         //await client.connection.close();
     } catch (e) {
