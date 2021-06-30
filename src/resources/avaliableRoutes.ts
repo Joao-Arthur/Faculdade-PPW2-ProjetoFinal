@@ -4,7 +4,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
     const url = `${req.protocol}://${req.get('host')}`;
     res.send({
-        rotas: {
+        routes: {
             healthcheck: {
                 queryParams: [],
                 url: `${url}/healthcheck`
@@ -23,6 +23,10 @@ router.get('/', (req, res) => {
             album: {
                 queryParams: ['title', 'band', 'song', 'release'],
                 url: `${url}/album`
+            },
+            user: {
+                'sign up': `${url}/user`,
+                login: `${url}/user/login`
             }
         },
         api: {
