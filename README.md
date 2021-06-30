@@ -2,50 +2,84 @@
 
 TODO
 
--   definir o tema
--   criar as definições do mongodb
--   fazer os 3 cruds em 2 apis diferentes
+-   fazer os cruds em 2 apis diferentes
 -   criar validação de token (JWT)
--   limitar os acessos da api externa
+-   limitar os acessos do mongo
 -   hospedar na heroku
 -   documentar
 
 ## Sobre o projeto
 
-Trabalho intermediário da disciplina de programação para web 2 do curso de ciências da computação em 2021, desenvolvido em _Node JS_ e _TS_, utilizando a plataforma _Heroku_ para hospedagem em nuvem.
+Trabalho final da disciplina de programação para web 2 do curso de ciências da computação em 2021, desenvolvido em _Node JS_ e _TS_, utilizando a plataforma _Heroku_ para hospedagem em nuvem.
 Link do projeto no Heroku: https://projeto-ppw.herokuapp.com
 
 ## Documentação da API
 
 ### /healthcheck
 
-##### info
+retorna status code 200.
 
-retorna o status code 200.
+### /band
 
-### /cursos
+#### get
 
-##### info
-
-array com informações sobre os cursos de graduação disponíveis na UNESC.
+Lista das bandas cadastradas.
 
 ##### queryparams
 
--   curso - nome do curso de graduação;
+-   name: Nome da banda;
+-   activeAt: Ano em que a banda esteja em atividade (entre a fundação e dissolução);
+-   foundation: Ano de fundação da banda;
+-   dissolution: Ano de dissolução da banda;
 
-### /rankingbandasderock
+#### post
 
-##### info
+Salva uma nova banda
 
-array com informações das 100 bandas de rock mais famosas de todos os tempos.
+#### delete
+
+Deleta uma banda
+
+### /album
+
+#### get
+
+Lista dos albuns cadastrados.
 
 ##### queryparams
 
--   ranking - posição da banda no ranking;
--   cidade - cidade de origem da banda;
--   regiao - estado ou país de origem da banda;
--   ano - ano em que a banda foi fundada;
+-   ranking: posição da banda no ranking;
+-   cidade: cidade de origem da banda;
+-   regiao: estado ou país de origem da banda;
+-   ano: ano em que a banda foi fundada;
+
+#### post
+
+Salva um nova album
+
+#### delete
+
+Deleta um album
+
+### /song
+
+Lista das músicas cadastradas.
+
+##### queryparams
+
+-   album: Nome do album;
+-   band: Nome da banda;
+-   durationMin: Tempo de duração mínimo;
+-   durationMax: Tempo de duração máximo;
+
+#### post
+
+Salva uma nova música
+
+#### delete
+
+Deleta uma música
 
 ### Demais rotas
 
-retorna um objeto das rotas disponíveis, e de informações da API e do autor.
+Retorna a listagem das rotas disponíveis, e de informações da API e do autor.
