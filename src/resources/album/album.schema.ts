@@ -9,13 +9,7 @@ const album = new Schema(
             required: true
         },
         releaseDate: Date,
-        trackList: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'song',
-                required: true
-            }
-        ]
+        trackList: [Number]
     },
     { timestamps: true }
 );

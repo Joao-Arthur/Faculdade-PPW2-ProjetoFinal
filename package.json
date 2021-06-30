@@ -11,15 +11,19 @@
   "author": "João Arthur Lothamer Fernandes",
   "license": "UNLICENSED",
   "dependencies": {
+    "@types/crypto-random-string": "^2.0.0",
     "@types/express": "^4.17.12",
     "@types/node": "^15.6.1",
     "@types/node-fetch": "^2.5.10",
+    "@types/node-rsa": "^1.1.0",
     "@types/nodemon": "^1.19.0",
+    "crypto-random-string": "^4.0.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.15",
     "node-fetch": "^2.6.1",
+    "node-rsa": "^1.1.1",
     "typescript": "^4.2.4"
   },
   "devDependencies": {

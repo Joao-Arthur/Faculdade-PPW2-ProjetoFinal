@@ -61,25 +61,6 @@ Salva um nova album
 
 Deleta um album
 
-### /song
-
-Lista das músicas cadastradas.
-
-##### queryparams
-
--   album: Nome do album;
--   band: Nome da banda;
--   durationMin: Tempo de duração mínimo;
--   durationMax: Tempo de duração máximo;
-
-#### post
-
-Salva uma nova música
-
-#### delete
-
-Deleta uma música
-
 ### Demais rotas
 
 Retorna a listagem das rotas disponíveis, e de informações da API e do autor.
