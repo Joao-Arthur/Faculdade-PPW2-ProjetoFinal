@@ -1,13 +1,9 @@
-import * as RandomString from 'crypto-random-string';
-import * as NodeRSA from 'node-rsa';
-import * as fs from 'fs';
+import randomString from 'crypto-random-string';
+import NodeRSA from 'node-rsa';
+import fs from 'fs';
 
 function generateSalt() {
-    return RandomString({ length: 256, type: 'ascii-printable' });
-}
-
-function getIterations() {
-    return 1;
+    return randomString({ length: 256, type: 'ascii-printable' });
 }
 
 function encryptRSA(text: string) {
@@ -30,7 +26,6 @@ function generatePassword(password: string): [string, string] {
 
 const autentication = {
     generateSalt,
-    getIterations,
     encryptRSA,
     decryptRSA,
     generatePassword
