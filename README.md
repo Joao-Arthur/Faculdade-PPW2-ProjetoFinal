@@ -31,6 +31,8 @@ Lista das bandas cadastradas.
 -   activeAt: Ano em que a banda esteja em atividade (entre a fundação e dissolução);
 -   foundation: Ano de fundação da banda;
 -   dissolution: Ano de dissolução da banda;
+-   album: Nome de um dos albuns da banda;
+-   song: Ano em que a banda esteja em atividade (entre a fundação e dissolução);
 
 #### post
 
@@ -44,14 +46,14 @@ Deleta uma banda
 
 #### get
 
-Lista dos albuns cadastrados.
+Lista dos álbuns cadastrados.
 
 ##### queryparams
 
--   ranking: posição da banda no ranking;
--   cidade: cidade de origem da banda;
--   regiao: estado ou país de origem da banda;
--   ano: ano em que a banda foi fundada;
+-   title: Nome do álbum;
+-   band: Nome da banda;
+-   song: Nome de alguma música incluída no álbum;
+-   release: Ano de lançamento;
 
 #### post
 

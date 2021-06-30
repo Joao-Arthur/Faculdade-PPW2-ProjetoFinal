@@ -7,7 +7,8 @@ const Band = mongoose.model(
             name: String,
             members: [String],
             foundation: Number,
-            dissolution: Number
+            dissolution: Number,
+            albums: [String]
         },
         { timestamps: true }
     )

@@ -5,13 +5,9 @@ const Album = mongoose.model(
     new Schema(
         {
             title: String,
-            band: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'band',
-                required: true
-            },
-            releaseDate: Date,
-            trackList: [String]
+            band: String,
+            trackList: [String],
+            release: Date
         },
         { timestamps: true }
     )

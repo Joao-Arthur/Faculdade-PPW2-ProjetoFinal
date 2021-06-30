@@ -25,8 +25,6 @@ function generatePassword(password: string): [string, string] {
 }
 
 const autentication = {
-    generateSalt,
-    encryptRSA,
     decryptRSA,
     generatePassword
 };
