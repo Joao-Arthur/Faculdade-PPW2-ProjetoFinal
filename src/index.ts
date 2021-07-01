@@ -34,12 +34,13 @@ Avaliable routes
 /band
 /user
 /user/login
-/`
+/
+`
     );
 });
 
 /*
-fetch('/band', {
+fetch('http://localhost:8080/band', {
     method: 'POST',
     cache: 'no-cache',
     credentials: 'same-origin',

@@ -2,11 +2,12 @@
 
 TODO
 
--   fazer os cruds em 2 apis diferentes
--   criar validação de token (JWT)
--   limitar os acessos do mongo
--   hospedar na heroku
--   documentar
+-   Implementar os CRUDs consultando API
+-   Validar token (JWT)
+-   Adicionar middlewares de log
+-   Limitar os acessos do mongo
+-   Hospedar na heroku
+-   Documentar
 
 ## Sobre o projeto
 

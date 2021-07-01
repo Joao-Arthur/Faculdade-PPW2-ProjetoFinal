@@ -1,4 +1,7 @@
 import express, { Request } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import Band from './band.schema';
+
 const router = express.Router();
 
 type bandType = {
@@ -9,7 +12,8 @@ type bandType = {
     albums: String[];
 };
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+    console.log(new Date(), 'GET /band');
     const name = req.query.name?.toString();
     const activeAt = req.query.activeAt?.toString();
     const foundation = Number(req.query.foundation?.toString());
@@ -17,10 +21,13 @@ router.get('/', (req, res) => {
     const album = req.query.album?.toString();
     const song = req.query.song?.toString();
 
-    res.send([1, 2, 3]);
+    const bandList = await Band.find();
+
+    res.send(bandList);
 });
 
-router.post('/', (req: Request<{}, {}, bandType>, res) => {
+router.post('/', async (req: Request<{}, {}, bandType>, res) => {
+    console.log(new Date(), 'POST /band');
     const band = req.body;
     try {
         if (!band.name) throw new Error();
@@ -38,16 +45,23 @@ router.post('/', (req: Request<{}, {}, bandType>, res) => {
         if (!band.name.length) throw new Error();
         if (!band.members.length) throw new Error();
         if (!(band.foundation > 0)) throw new Error();
-        if (!(band.dissolution > 0)) throw new Error();
+        if (band.dissolution < 0) throw new Error();
         if (!band.albums.length) throw new Error();
     } catch {
-        return res.sendStatus(422);
+        return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
     }
 
-    res.send([1, 2, 3]);
+    try {
+        await Band.create(band);
+        console.log(band);
+        return res.sendStatus(StatusCodes.CREATED);
+    } catch {
+        return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
 });
 
 router.delete('/', (req, res) => {
+    console.log(new Date(), 'DELETE /band');
     res.send([1, 2, 3]);
 });
 
