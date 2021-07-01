@@ -17,6 +17,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use((req, res, next) => {
+    console.log(new Date(), req.method, req.path);
+    next();
+});
+
 app.use('/healthcheck', healthcheck);
 app.use('/album', album);
 app.use('/band', band);
