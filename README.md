@@ -4,7 +4,6 @@ TODO
 
 -   Implementar os CRUDs consultando API
 -   Validar token (JWT)
--   Adicionar middlewares de log
 -   Limitar os acessos do mongo
 -   Hospedar na heroku
 -   Documentar

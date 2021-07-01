@@ -17,7 +17,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use((req, res, next) => {
+app.use((req, _, next) => {
     console.log(new Date(), req.method, req.path);
     next();
 });

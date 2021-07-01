@@ -12,7 +12,6 @@ type albumType = {
 };
 
 router.get('/', async (req, res) => {
-    console.log(new Date(), 'GET /album');
     const title = req.query.title?.toString();
     const band = req.query.band?.toString();
     const song = req.query.song?.toString();
@@ -22,7 +21,6 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req: Request<{}, {}, albumType>, res) => {
-    console.log(new Date(), 'POST /album');
     const album = req.body;
     try {
         if (!album.title) throw new Error();
@@ -52,7 +50,6 @@ router.post('/', async (req: Request<{}, {}, albumType>, res) => {
 });
 
 router.delete('/', (req, res) => {
-    console.log(new Date(), 'DELETE /album');
     res.send([1, 2, 3]);
 });
 

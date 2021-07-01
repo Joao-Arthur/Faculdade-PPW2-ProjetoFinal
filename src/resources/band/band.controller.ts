@@ -13,7 +13,6 @@ type bandType = {
 };
 
 router.get('/', async (req, res) => {
-    console.log(new Date(), 'GET /band');
     const name = req.query.name?.toString();
     const activeAt = req.query.activeAt?.toString();
     const foundation = Number(req.query.foundation?.toString());
@@ -27,7 +26,6 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req: Request<{}, {}, bandType>, res) => {
-    console.log(new Date(), 'POST /band');
     const band = req.body;
     try {
         if (!band.name) throw new Error();
@@ -61,7 +59,6 @@ router.post('/', async (req: Request<{}, {}, bandType>, res) => {
 });
 
 router.delete('/', (req, res) => {
-    console.log(new Date(), 'DELETE /band');
     res.send([1, 2, 3]);
 });
 
