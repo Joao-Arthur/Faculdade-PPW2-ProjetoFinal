@@ -6,13 +6,24 @@ import Album from './album.schema';
 
 const router = express.Router();
 
+type filterType = {
+    title?: string;
+    band?: string;
+    release?: number;
+};
+
 router.get('/', async (req, res) => {
     const title = req.query.title?.toString();
     const band = req.query.band?.toString();
-    const song = req.query.song?.toString();
     const release = Number(req.query.release?.toString());
 
-    const foundAlbums = await Album.find();
+    const filter: filterType = {};
+
+    if (title) filter.title = title;
+    if (band) filter.band = band;
+    if (release) filter.release = release;
+
+    const foundAlbums = await Album.find(filter);
     res.send(foundAlbums);
 });
 
@@ -39,7 +50,6 @@ type albumType = {
 router.post('/', async (req: Request<{}, {}, albumType>, res) => {
     const album = req.body;
     let trackList = [];
-
     try {
         if (!album.title) throw new Error();
         if (!album.band) throw new Error();
@@ -55,29 +65,23 @@ router.post('/', async (req: Request<{}, {}, albumType>, res) => {
     } catch {
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
     }
-
     try {
         const search = new URLSearchParams({
             strict: 'on',
             q: `artist:"${album.band}" album:"${album.title}"`
         }).toString();
-
         const results = await fetch(`https://api.deezer.com/search?${search}`)
             .then(res => res.json())
             .then(({ data }) => data);
-
         function addSongs(newSongs) {
             trackList = trackList.concat(
                 newSongs.map(({ title_short }) => title_short)
             );
         }
-
         let fetchedSongs = await fetch(
             `https://api.deezer.com/album/${results[0].album.id}/tracks`
         ).then(res => res.json());
-
         addSongs(fetchedSongs.data);
-
         while (fetchedSongs.next) {
             fetchedSongs = await fetch(fetchedSongs.next).then(res =>
                 res.json()
@@ -87,9 +91,7 @@ router.post('/', async (req: Request<{}, {}, albumType>, res) => {
     } catch (e) {
         console.error(e);
     }
-
     album.trackList = trackList;
-
     try {
         const createdAlbum = await Album.create(album);
         return res.send(createdAlbum);

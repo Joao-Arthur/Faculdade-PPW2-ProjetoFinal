@@ -6,15 +6,27 @@ import Band from './band.schema';
 
 const router = express.Router();
 
+type filterType = {
+    name?: string;
+    activeAt?: string;
+    foundation?: number;
+    dissolution?: number;
+};
+
 router.get('/', async (req, res) => {
     const name = req.query.name?.toString();
     const activeAt = req.query.activeAt?.toString();
     const foundation = Number(req.query.foundation?.toString());
     const dissolution = Number(req.query.dissolution?.toString());
-    const album = req.query.album?.toString();
-    const song = req.query.song?.toString();
 
-    const foundBands = await Band.find();
+    const filter: filterType = {};
+
+    if (name) filter.name = name;
+    if (activeAt) filter.activeAt = activeAt;
+    if (foundation) filter.foundation = foundation;
+    if (dissolution) filter.dissolution = dissolution;
+
+    const foundBands = await Band.find(filter);
     res.send(foundBands);
 });
 
@@ -42,7 +54,6 @@ type bandType = {
 router.post('/', async (req: Request<{}, {}, bandType>, res) => {
     const band = req.body;
     let albums = [];
-
     try {
         if (!band.name) throw new Error();
         if (!band.members) throw new Error();
@@ -61,13 +72,11 @@ router.post('/', async (req: Request<{}, {}, bandType>, res) => {
     } catch {
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
     }
-
     try {
         const search = new URLSearchParams({
             strict: 'on',
             q: `artist:"${band.name}"`
         }).toString();
-
         const results = await fetch(`https://api.deezer.com/search?${search}`)
             .then(res => res.json())
             .then(({ data }) => data);
@@ -79,13 +88,10 @@ router.post('/', async (req: Request<{}, {}, bandType>, res) => {
                     .map(({ title }) => title)
             );
         }
-
         let fetchedAlbums = await fetch(
             `https://api.deezer.com/artist/${results[0].artist.id}/albums`
         ).then(res => res.json());
-
         addAlbums(fetchedAlbums.data);
-
         while (fetchedAlbums.next) {
             fetchedAlbums = await fetch(fetchedAlbums.next).then(res =>
                 res.json()
@@ -95,9 +101,7 @@ router.post('/', async (req: Request<{}, {}, bandType>, res) => {
     } catch (e) {
         console.error(e);
     }
-
     band.albums = albums;
-
     try {
         const createdBand = await Band.create(band);
         return res.send(createdBand);
