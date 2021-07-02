@@ -11,8 +11,22 @@ router.get('/', async (req, res) => {
     const band = req.query.band?.toString();
     const song = req.query.song?.toString();
     const release = Number(req.query.release?.toString());
-    const albumList = await Album.find();
-    res.send(albumList);
+
+    const foundAlbums = await Album.find();
+    res.send(foundAlbums);
+});
+
+router.get('/:id', async (req, res) => {
+    const _id = req.params.id;
+    if (!_id) return res.sendStatus(StatusCodes.BAD_REQUEST);
+    try {
+        const foundAlbum = await Album.findById(_id);
+        if (foundAlbum) {
+            res.send(foundAlbum);
+        } else res.sendStatus(StatusCodes.NOT_FOUND);
+    } catch {
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
 });
 
 type albumType = {
@@ -77,16 +91,21 @@ router.post('/', async (req: Request<{}, {}, albumType>, res) => {
     album.trackList = trackList;
 
     try {
-        await Album.create(album);
-        return res.sendStatus(StatusCodes.CREATED);
+        const createdAlbum = await Album.create(album);
+        return res.send(createdAlbum);
     } catch {
         return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 
-router.delete('/', (req, res) => {
+router.delete('/:id', async (req, res) => {
+    const _id = req.params.id;
+    if (!_id) return res.sendStatus(StatusCodes.BAD_REQUEST);
     try {
-        res.sendStatus(StatusCodes.NO_CONTENT);
+        const deletedAlbum = await Album.findByIdAndDelete(_id);
+        if (deletedAlbum) {
+            res.send(deletedAlbum);
+        } else res.sendStatus(StatusCodes.NOT_FOUND);
     } catch {
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
