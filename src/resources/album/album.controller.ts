@@ -6,7 +6,7 @@ import Album from './album.schema';
 
 const router = express.Router();
 
-type filterType = {
+type albumFilter = {
     title?: string;
     band?: string;
     release?: number;
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
     const band = req.query.band?.toString();
     const release = Number(req.query.release?.toString());
 
-    const filter: filterType = {};
+    const filter: albumFilter = {};
 
     if (title) filter.title = title;
     if (band) filter.band = band;
@@ -40,14 +40,57 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-type albumType = {
-    title: String;
-    band: String;
-    trackList?: String[];
-    release: Date;
+type putAlbum = {
+    _id?: string;
+    title?: string;
+    band?: string;
+    trackList?: string[];
+    release?: Date;
 };
 
-router.post('/', async (req: Request<{}, {}, albumType>, res) => {
+router.put('/', async (req: Request<{}, {}, putAlbum>, res) => {
+    const album = req.body;
+    if (
+        !album._id ||
+        (!album.title && !album.band && !album.trackList && !album.release)
+    )
+        return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
+    try {
+        if (album.title) {
+            if (typeof album.title !== 'string') throw new Error();
+            if (!album.title.length) throw new Error();
+        }
+        if (album.band) {
+            if (typeof album.band !== 'string') throw new Error();
+            if (!album.band.length) throw new Error();
+        }
+        if (album.trackList && !Array.isArray(album.trackList))
+            throw new Error();
+        if (album.release) {
+            if (album.release instanceof Date) throw new Error();
+            if (album.release < 0) throw new Error();
+        }
+    } catch {
+        return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
+    }
+    try {
+        const updatedAlbum = await Album.findByIdAndUpdate(album);
+        if (updatedAlbum) {
+            res.send(updatedAlbum);
+        } else res.sendStatus(StatusCodes.NOT_FOUND);
+    } catch {
+        return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+});
+
+type postAlbum = {
+    title?: string;
+    band?: string;
+    trackList?: string[];
+    release?: Date;
+};
+
+router.post('/', async (req: Request<{}, {}, postAlbum>, res) => {
     const album = req.body;
     let trackList = [];
     try {
