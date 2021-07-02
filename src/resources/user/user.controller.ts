@@ -4,8 +4,29 @@ import User from './user.schema';
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-    res.send([1, 2, 3]);
+router.post('/', async (req, res) => {
+    const user = req.body;
+
+    try {
+        if (!user.name) throw new Error();
+        if (!user.username) throw new Error();
+        if (!user.password) throw new Error();
+        if (typeof user.name !== 'string') throw new Error();
+        if (typeof user.username !== 'string') throw new Error();
+        if (typeof user.password !== 'string') throw new Error();
+        if (!user.name.length) throw new Error();
+        if (!user.username.length) throw new Error();
+        if (!user.password.length) throw new Error();
+    } catch {
+        return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
+    }
+
+    try {
+        const createdUser = await User.create(user);
+        return res.send(createdUser);
+    } catch {
+        return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
 });
 
 router.delete('/:id', async (req, res) => {
