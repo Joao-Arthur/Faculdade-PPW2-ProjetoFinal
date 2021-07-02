@@ -28,11 +28,8 @@ Lista das bandas cadastradas.
 ##### queryparams
 
 -   name: Nome da banda;
--   activeAt: Ano em que a banda esteja em atividade (entre a fundação e dissolução);
 -   foundation: Ano de fundação da banda;
 -   dissolution: Ano de dissolução da banda;
--   album: Nome de um dos albuns da banda;
--   song: Ano em que a banda esteja em atividade (entre a fundação e dissolução);
 
 #### post
 
@@ -52,7 +49,6 @@ Lista dos álbuns cadastrados.
 
 -   title: Nome do álbum;
 -   band: Nome da banda;
--   song: Nome de alguma música incluída no álbum;
 -   release: Ano de lançamento;
 
 #### post

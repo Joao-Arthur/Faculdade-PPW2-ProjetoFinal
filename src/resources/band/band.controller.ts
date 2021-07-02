@@ -8,21 +8,18 @@ const router = express.Router();
 
 type bandFilter = {
     name?: string;
-    activeAt?: string;
     foundation?: number;
     dissolution?: number;
 };
 
 router.get('/', async (req, res) => {
     const name = req.query.name?.toString();
-    const activeAt = req.query.activeAt?.toString();
     const foundation = Number(req.query.foundation?.toString());
     const dissolution = Number(req.query.dissolution?.toString());
 
     const filter: bandFilter = {};
 
     if (name) filter.name = name;
-    if (activeAt) filter.activeAt = activeAt;
     if (foundation) filter.foundation = foundation;
     if (dissolution) filter.dissolution = dissolution;
 
