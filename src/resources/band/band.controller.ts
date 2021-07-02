@@ -58,8 +58,6 @@ router.post('/', async (req: Request<{}, {}, bandType>, res) => {
         const results = await fetch(`https://api.deezer.com/search?${search}`)
             .then(res => res.json())
             .then(({ data }) => data);
-        const artist = results[0].artist;
-        const artistId = artist.id;
 
         function addAlbums(newAlbums) {
             albums = albums.concat(
@@ -70,8 +68,9 @@ router.post('/', async (req: Request<{}, {}, bandType>, res) => {
         }
 
         let fetchedAlbums = await fetch(
-            `https://api.deezer.com/artist/${artistId}/albums`
+            `https://api.deezer.com/artist/${results[0].artist.id}/albums`
         ).then(res => res.json());
+
         addAlbums(fetchedAlbums.data);
 
         while (fetchedAlbums.next) {
@@ -80,14 +79,14 @@ router.post('/', async (req: Request<{}, {}, bandType>, res) => {
             );
             addAlbums(fetchedAlbums.data);
         }
-
-        band.albums = albums;
     } catch (e) {
         console.error(e);
     }
 
+    band.albums = albums;
+
     try {
-        await Band.create({ band });
+        await Band.create(band);
         return res.sendStatus(StatusCodes.CREATED);
     } catch {
         return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);

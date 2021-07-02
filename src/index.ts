@@ -64,4 +64,23 @@ fetch('http://localhost:8080/band', {
             dissolution: 1970
         })
 });
+
+
+
+fetch('http://localhost:8080/album', {
+    method: 'POST',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+            title: 'rubber soul',
+band: 'the beatles',
+
+release: new Date()
+		
+        })
+});
+
 */
