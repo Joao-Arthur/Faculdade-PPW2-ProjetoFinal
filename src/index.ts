@@ -7,6 +7,8 @@ import album from './resources/album';
 import band from './resources/band';
 import user from './resources/user';
 import { setupConnection } from './connection';
+import authorization from './authorization';
+import { StatusCodes } from 'http-status-codes';
 
 dotenv.config();
 setupConnection();
@@ -19,6 +21,15 @@ app.use(express.json());
 
 app.use((req, _, next) => {
     console.log(new Date(), req.method, req.path);
+    next();
+});
+
+app.use((req, res, next) => {
+    if (
+        (req.path.startsWith('/band') || req.path.startsWith('/album')) &&
+        !authorization(req.headers.authorization)
+    )
+        return res.sendStatus(StatusCodes.UNAUTHORIZED);
     next();
 });
 

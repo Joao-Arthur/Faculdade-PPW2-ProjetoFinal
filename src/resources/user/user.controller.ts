@@ -1,5 +1,6 @@
 import express from 'express';
 import { StatusCodes } from 'http-status-codes';
+import jwt from 'jsonwebtoken';
 import User from './user.schema';
 
 const router = express.Router();
@@ -11,9 +12,11 @@ router.post('/', async (req, res) => {
         if (!user.name) throw new Error();
         if (!user.username) throw new Error();
         if (!user.password) throw new Error();
+
         if (typeof user.name !== 'string') throw new Error();
         if (typeof user.username !== 'string') throw new Error();
         if (typeof user.password !== 'string') throw new Error();
+
         if (!user.name.length) throw new Error();
         if (!user.username.length) throw new Error();
         if (!user.password.length) throw new Error();
@@ -22,8 +25,8 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const createdUser = await User.create(user);
-        return res.send(createdUser);
+        //const createdUser = await User.create(user);
+        //return res.send(createdUser);
     } catch {
         return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
@@ -42,8 +45,11 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.post('/login', (req, res) => {
-    res.send([1, 2, 3]);
+router.post('/login', async (req, res) => {
+    if (!process.env.JWT_KEY)
+        return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    const token = jwt.sign({ user: 'manager' }, process.env.JWT_KEY);
+    res.send(token);
 });
 
 export default router;
