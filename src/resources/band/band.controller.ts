@@ -21,7 +21,6 @@ router.get('/', async (req, res) => {
     const song = req.query.song?.toString();
 
     const bandList = await Band.find();
-
     res.send(bandList);
 });
 
@@ -48,18 +47,26 @@ router.post('/', async (req: Request<{}, {}, bandType>, res) => {
     } catch {
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
     }
-
     try {
         await Band.create(band);
-        console.log(band);
         return res.sendStatus(StatusCodes.CREATED);
     } catch {
         return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 
-router.delete('/', (req, res) => {
-    res.send([1, 2, 3]);
+router.delete('/', async (req, res) => {
+    const band = req.body;
+    try {
+        const { deletedCount } = await Band.deleteOne(band);
+        if (deletedCount === 1) {
+            res.sendStatus(StatusCodes.OK);
+        } else {
+            res.sendStatus(StatusCodes.NOT_FOUND);
+        }
+    } catch {
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
 });
 
 export default router;

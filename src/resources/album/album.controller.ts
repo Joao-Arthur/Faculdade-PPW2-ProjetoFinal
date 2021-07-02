@@ -50,7 +50,11 @@ router.post('/', async (req: Request<{}, {}, albumType>, res) => {
 });
 
 router.delete('/', (req, res) => {
-    res.send([1, 2, 3]);
+    try {
+        res.sendStatus(StatusCodes.NO_CONTENT);
+    } catch {
+        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
 });
 
 export default router;
