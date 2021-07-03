@@ -6,8 +6,7 @@ const User = mongoose.model(
         {
             name: String,
             username: String,
-            hash: String,
-            salt: String
+            password: String
         },
         { timestamps: true }
     )
