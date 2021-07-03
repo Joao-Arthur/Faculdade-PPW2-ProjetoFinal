@@ -1,26 +1,21 @@
 # Projeto Final PPW2
 
-TODO
-
--   Limitar os acessos do mongo
--   Documentar
-
 ## Sobre o projeto
 
-Trabalho final da disciplina de programação para web 2 do curso de ciências da computação em 2021, desenvolvido em _Node JS_ e _TS_, utilizando a plataforma _Heroku_ para hospedagem em nuvem.
-Link do projeto no Heroku: https://projeto-ppw.herokuapp.com
+Trabalho final da disciplina de programação para web 2 do curso de ciências da computação em 2021, desenvolvido em _Node JS_, _TS_ e _MongoDB_, utilizando a plataforma _Heroku_ para hospedagem em nuvem.
+Link do projeto no Heroku: https://projeto-final-ppw2.herokuapp.com
 
 ## Documentação da API
 
 ### /healthcheck
 
-retorna status code 200.
+retorno: status code 200.
 
 ### /band
 
 #### get
 
-Lista das bandas cadastradas.
+retorno: Lista das bandas cadastradas.
 
 ##### queryparams
 
@@ -31,10 +26,12 @@ Lista das bandas cadastradas.
 #### post
 
 Salva uma nova banda
+retorno: Objeto da banda criada.
 
 #### delete
 
 Deleta uma banda
+retorno: Objeto da banda deletada
 
 ### /album
 

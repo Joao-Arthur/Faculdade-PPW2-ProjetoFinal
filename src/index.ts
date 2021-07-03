@@ -27,7 +27,7 @@ app.use((req, _, next) => {
 app.use((req, res, next) => {
     if (
         (req.path.startsWith('/band') || req.path.startsWith('/album')) &&
-        !authorization(req.headers.authorization)
+        !authorization.verify(req.headers.authorization)
     )
         return res.sendStatus(StatusCodes.UNAUTHORIZED);
     next();

@@ -1,6 +1,7 @@
 import express, { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
+import authorization from '../../authorization';
 import isValid from '../../isValid';
 import User from './user.schema';
 
@@ -28,9 +29,7 @@ router.post('/', async (req: Request<{}, {}, postUser>, res) => {
 
     try {
         await User.create(user);
-        if (!process.env.JWT_KEY)
-            return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-        const token = jwt.sign(user.username, process.env.JWT_KEY);
+        const token = authorization.sign(user.username);
         res.send(token);
     } catch {
         return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -70,9 +69,7 @@ router.post('/login', async (req: Request<{}, {}, postLogin>, res) => {
     try {
         const foundUser = await User.findOne(user);
         if (!foundUser) return res.sendStatus(StatusCodes.NOT_FOUND);
-        if (!process.env.JWT_KEY)
-            return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-        const token = jwt.sign(user.username, process.env.JWT_KEY);
+        const token = authorization.sign(user.username);
         res.send(token);
     } catch {
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
