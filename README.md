@@ -2,10 +2,7 @@
 
 TODO
 
--   Implementar os CRUDs consultando API
--   Validar token (JWT)
 -   Limitar os acessos do mongo
--   Hospedar na heroku
 -   Documentar
 
 ## Sobre o projeto

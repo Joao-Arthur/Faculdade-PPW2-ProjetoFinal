@@ -2,6 +2,7 @@ import express, { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import fetch from 'node-fetch';
 import { URLSearchParams } from 'url';
+import isValid from '../../isValid';
 import Band from './band.schema';
 
 const router = express.Router();
@@ -52,35 +53,26 @@ type putBand = {
 router.put('/', async (req: Request<{}, {}, putBand>, res) => {
     const band = req.body;
     if (
-        !band._id ||
-        (!band.name &&
-            !band.members &&
-            !band.foundation &&
-            !band.dissolution &&
-            !band.albums)
+        !band.name &&
+        !band.members &&
+        !band.foundation &&
+        !band.dissolution &&
+        !band.albums
     )
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
-
-    try {
-        if (band.name) {
-            if (typeof band.name !== 'string') throw new Error();
-            if (!band.name.length) throw new Error();
-        }
-        if (band.members) {
-            if (!Array.isArray(band.members)) throw new Error();
-            if (!band.members.length) throw new Error();
-        }
-        if (band.foundation) {
-            if (typeof band.foundation !== 'number') throw new Error();
-            if (!(band.foundation > 0)) throw new Error();
-        }
-        if (band.dissolution) {
-            if (typeof band.dissolution !== 'number') throw new Error();
-            if (band.dissolution < 0) throw new Error();
-        }
-    } catch {
+    if (
+        !isValid(
+            {
+                _id: { type: 'string', required: true },
+                name: { type: 'string' },
+                members: { type: 'stringArray' },
+                foundation: { type: 'number' },
+                dissolution: { type: 'number' }
+            },
+            band
+        )
+    )
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
-    }
     try {
         const updatedband = await Band.findByIdAndUpdate(band);
         if (updatedband) {
@@ -102,24 +94,18 @@ type postBand = {
 router.post('/', async (req: Request<{}, {}, postBand>, res) => {
     const band = req.body;
     let albums = [];
-    try {
-        if (!band.name) throw new Error();
-        if (!band.members) throw new Error();
-        if (!band.foundation) throw new Error();
-        if (!band.dissolution) throw new Error();
-
-        if (typeof band.name !== 'string') throw new Error();
-        if (!Array.isArray(band.members)) throw new Error();
-        if (typeof band.foundation !== 'number') throw new Error();
-        if (typeof band.dissolution !== 'number') throw new Error();
-
-        if (!band.name.length) throw new Error();
-        if (!band.members.length) throw new Error();
-        if (!(band.foundation > 0)) throw new Error();
-        if (band.dissolution < 0) throw new Error();
-    } catch {
+    if (
+        !isValid(
+            {
+                name: { type: 'string', required: true },
+                members: { type: 'stringArray', required: true },
+                foundation: { type: 'number', required: true },
+                dissolution: { type: 'number', required: true }
+            },
+            band
+        )
+    )
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
-    }
     try {
         const search = new URLSearchParams({
             strict: 'on',

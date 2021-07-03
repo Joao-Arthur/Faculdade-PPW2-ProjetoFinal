@@ -1,6 +1,7 @@
 import express, { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
+import isValid from '../../isValid';
 import User from './user.schema';
 
 const router = express.Router();
@@ -13,22 +14,17 @@ type postUser = {
 
 router.post('/', async (req: Request<{}, {}, postUser>, res) => {
     const user = req.body;
-
-    try {
-        if (!user.name) throw new Error();
-        if (!user.username) throw new Error();
-        if (!user.password) throw new Error();
-
-        if (typeof user.name !== 'string') throw new Error();
-        if (typeof user.username !== 'string') throw new Error();
-        if (typeof user.password !== 'string') throw new Error();
-
-        if (!user.name.length) throw new Error();
-        if (!user.username.length) throw new Error();
-        if (!user.password.length) throw new Error();
-    } catch {
+    if (
+        !isValid(
+            {
+                name: { type: 'string', required: true },
+                username: { type: 'string', required: true },
+                password: { type: 'string', required: true }
+            },
+            user
+        )
+    )
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
-    }
 
     try {
         await User.create(user);
@@ -61,20 +57,16 @@ type postLogin = {
 
 router.post('/login', async (req: Request<{}, {}, postLogin>, res) => {
     const user = req.body;
-
-    try {
-        if (!user.username) throw new Error();
-        if (!user.password) throw new Error();
-
-        if (typeof user.username !== 'string') throw new Error();
-        if (typeof user.password !== 'string') throw new Error();
-
-        if (!user.username.length) throw new Error();
-        if (!user.password.length) throw new Error();
-    } catch {
+    if (
+        !isValid(
+            {
+                username: { type: 'string', required: true },
+                password: { type: 'string', required: true }
+            },
+            user
+        )
+    )
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
-    }
-
     try {
         const foundUser = await User.findOne(user);
         if (!foundUser) return res.sendStatus(StatusCodes.NOT_FOUND);

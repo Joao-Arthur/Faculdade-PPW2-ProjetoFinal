@@ -2,6 +2,7 @@ import express, { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import fetch from 'node-fetch';
 import { URLSearchParams } from 'url';
+import isValid from '../../isValid';
 import Album from './album.schema';
 
 const router = express.Router();
@@ -50,29 +51,20 @@ type putAlbum = {
 
 router.put('/', async (req: Request<{}, {}, putAlbum>, res) => {
     const album = req.body;
+    if (!album.title && !album.band && !album.trackList && !album.release)
+        return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
     if (
-        !album._id ||
-        (!album.title && !album.band && !album.trackList && !album.release)
+        !isValid(
+            {
+                _id: { type: 'string', required: true },
+                title: { type: 'string' },
+                band: { type: 'string' },
+                release: { type: 'date' }
+            },
+            album
+        )
     )
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
-    try {
-        if (album.title) {
-            if (typeof album.title !== 'string') throw new Error();
-            if (!album.title.length) throw new Error();
-        }
-        if (album.band) {
-            if (typeof album.band !== 'string') throw new Error();
-            if (!album.band.length) throw new Error();
-        }
-        if (album.trackList && !Array.isArray(album.trackList))
-            throw new Error();
-        if (album.release) {
-            if (album.release instanceof Date) throw new Error();
-            if (album.release < 0) throw new Error();
-        }
-    } catch {
-        return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
-    }
     try {
         const updatedAlbum = await Album.findByIdAndUpdate(album);
         if (updatedAlbum) {
@@ -93,26 +85,23 @@ type postAlbum = {
 router.post('/', async (req: Request<{}, {}, postAlbum>, res) => {
     const album = req.body;
     let trackList = [];
-    try {
-        if (!album.title) throw new Error();
-        if (!album.band) throw new Error();
-        if (!album.release) throw new Error();
-
-        if (typeof album.title !== 'string') throw new Error();
-        if (typeof album.band !== 'string') throw new Error();
-        if (album.release instanceof Date) throw new Error();
-
-        if (!album.title.length) throw new Error();
-        if (!album.band.length) throw new Error();
-        if (album.release < 0) throw new Error();
-    } catch {
+    if (
+        !isValid(
+            {
+                title: { type: 'string', required: true },
+                band: { type: 'string', required: true },
+                release: { type: 'date', required: true }
+            },
+            album
+        )
+    )
         return res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
-    }
     try {
         const search = new URLSearchParams({
             strict: 'on',
             q: `artist:"${album.band}" album:"${album.title}"`
         }).toString();
+
         const results = await fetch(`https://api.deezer.com/search?${search}`)
             .then(res => res.json())
             .then(({ data }) => data);
