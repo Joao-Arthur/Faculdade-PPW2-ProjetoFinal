@@ -116,15 +116,19 @@ router.post('/', async (req: Request<{}, {}, postAlbum>, res) => {
         const results = await fetch(`https://api.deezer.com/search?${search}`)
             .then(res => res.json())
             .then(({ data }) => data);
+
         function addSongs(newSongs) {
             trackList = trackList.concat(
                 newSongs.map(({ title_short }) => title_short)
             );
         }
+
         let fetchedSongs = await fetch(
             `https://api.deezer.com/album/${results[0].album.id}/tracks`
         ).then(res => res.json());
+
         addSongs(fetchedSongs.data);
+
         while (fetchedSongs.next) {
             fetchedSongs = await fetch(fetchedSongs.next).then(res =>
                 res.json()

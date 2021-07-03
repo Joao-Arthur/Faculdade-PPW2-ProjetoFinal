@@ -125,6 +125,7 @@ router.post('/', async (req: Request<{}, {}, postBand>, res) => {
             strict: 'on',
             q: `artist:"${band.name}"`
         }).toString();
+
         const results = await fetch(`https://api.deezer.com/search?${search}`)
             .then(res => res.json())
             .then(({ data }) => data);
@@ -136,10 +137,13 @@ router.post('/', async (req: Request<{}, {}, postBand>, res) => {
                     .map(({ title }) => title)
             );
         }
+
         let fetchedAlbums = await fetch(
             `https://api.deezer.com/artist/${results[0].artist.id}/albums`
         ).then(res => res.json());
+
         addAlbums(fetchedAlbums.data);
+
         while (fetchedAlbums.next) {
             fetchedAlbums = await fetch(fetchedAlbums.next).then(res =>
                 res.json()
