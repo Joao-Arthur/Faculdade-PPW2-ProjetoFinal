@@ -1,6 +1,5 @@
 import express, { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import jwt from 'jsonwebtoken';
 import authorization from '../../authorization';
 import isValid from '../../isValid';
 import User from './user.schema';
@@ -33,19 +32,6 @@ router.post('/', async (req: Request<{}, {}, postUser>, res) => {
         res.send(token);
     } catch {
         return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
-});
-
-router.delete('/:id', async (req, res) => {
-    const _id = req.params.id;
-    if (!_id) return res.sendStatus(StatusCodes.BAD_REQUEST);
-    try {
-        const deletedUser = await User.findByIdAndDelete(_id);
-        if (deletedUser) {
-            res.send(deletedUser);
-        } else res.sendStatus(StatusCodes.NOT_FOUND);
-    } catch {
-        res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 });
 

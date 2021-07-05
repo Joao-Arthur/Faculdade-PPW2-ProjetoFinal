@@ -10,19 +10,16 @@ const router = express.Router();
 type albumFilter = {
     title?: string;
     band?: string;
-    release?: number;
 };
 
 router.get('/', async (req, res) => {
     const title = req.query.title?.toString();
     const band = req.query.band?.toString();
-    const release = Number(req.query.release?.toString());
 
     const filter: albumFilter = {};
 
     if (title) filter.title = title;
     if (band) filter.band = band;
-    if (release) filter.release = release;
 
     const foundAlbums = await Album.find(filter);
     res.send(foundAlbums);

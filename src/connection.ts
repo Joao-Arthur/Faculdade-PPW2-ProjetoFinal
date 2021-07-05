@@ -11,13 +11,12 @@ export async function setupConnection() {
 
         const uri = `mongodb+srv://${username}:${password}@${mongourl}`;
 
-        const client = await mongoose.connect(uri, {
+        await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
 
         console.log(new Date(), 'Connected to mongo', '\n');
-        //await client.connection.close();
     } catch (e) {
         console.error(e);
     }

@@ -5,54 +5,170 @@
 Trabalho final da disciplina de programação para web 2 do curso de ciências da computação em 2021, desenvolvido em _Node JS_, _TS_ e _MongoDB_, utilizando a plataforma _Heroku_ para hospedagem em nuvem.
 Link do projeto no Heroku: https://projeto-final-ppw2.herokuapp.com
 
-## Documentação da API
+A API utiliza autenticação com token JWT para acessar os principais recursos.
 
-### /healthcheck
+O token deve ser passado no cabeçalho das requisições como um `Bearer Token`.
 
-retorno: status code 200.
+## API
 
-### /band
+## `/healthcheck` No Authorization
 
-#### get
+### GET `/healthcheck`
 
-retorno: Lista das bandas cadastradas.
+Retorno: status code 200.
 
-##### queryparams
+</br></br>
 
--   name: Nome da banda;
--   foundation: Ano de fundação da banda;
--   dissolution: Ano de dissolução da banda;
+## `/user` Authorization Bearer Token
 
-#### post
+### POST `/user`
 
-Salva uma nova banda
-retorno: Objeto da banda criada.
+Salva um novo usuário da API.
 
-#### delete
+Retorno: Token para acessar os recursos `band` e `album`.
 
-Deleta uma banda
-retorno: Objeto da banda deletada
+Corpo da requisição:
 
-### /album
+```typescript
+{
+    name: string,
+    username: string,
+    password: string,
+}
+```
 
-#### get
+### POST `/user/login`
 
-Lista dos álbuns cadastrados.
+Realiza o login de um usuário já cadastrado.
 
-##### queryparams
+Retorno: Token para acessar os recursos `band` e `album`.
 
--   title: Nome do álbum;
--   band: Nome da banda;
--   release: Ano de lançamento;
+Corpo da requisição:
 
-#### post
+```typescript
+{
+    username: string,
+    password: string,
+}
+```
 
-Salva um nova album
+</br></br>
 
-#### delete
+## `/band` Authorization Bearer Token
 
-Deleta um album
+### GET `/band`
 
-### Demais rotas
+Retorno: Lista das bandas cadastradas.
 
-Retorna a listagem das rotas disponíveis, e de informações da API e do autor.
+#### queryparams
+
+-   `name?: string` nome da banda;
+-   `foundation?: number` ano de fundação da banda;
+-   `dissolution?: number` ano de dissolução da banda;
+
+### GET `/band/:id`
+
+Retorno: A banda com o id informado.
+
+### POST `/band`
+
+Salva uma nova banda.
+
+Retorno: Objeto da banda criada.
+
+Corpo da requisição:
+
+```typescript
+{
+    name: string,
+    members: string[],
+    foundation: number,
+    dissolution: number,
+}
+```
+
+### PUT `/band`
+
+Atualiza uma banda a partir do id informado.
+
+Retorno: Objeto da banda atualizada.
+
+Corpo da requisição:
+
+```typescript
+{
+    _id: string,
+    name?: string,
+    members?: string[],
+    foundation?: number,
+    dissolution?: number,
+    albums?: string[],
+}
+```
+
+### DELETE `/band/:id`
+
+Deleta uma banda a partir do id informado.
+
+Retorno: Objeto da banda deletada.
+
+</br></br>
+
+## `/album` Authorization Bearer Token
+
+### GET `/album`
+
+Retorno: Lista dos álbuns cadastrados.
+
+#### queryparams
+
+-   `title?: string` nome do álbum;
+-   `band?: string` nome da banda;
+
+### GET `/album/:id`
+
+Retorno: O álbum com o id informado.
+
+### POST `/album`
+
+Salva um novo álbum.
+Retorno: Objeto do álbum criado.
+
+Corpo da requisição:
+
+```typescript
+{
+    title: string,
+    band: string,
+    release: Date,
+}
+```
+
+### PUT `/album`
+
+Atualiza um álbum a partir do id informado.
+
+Retorno: Objeto da álbum atualizado.
+
+Corpo da requisição:
+
+```typescript
+{
+    _id: string,
+    title?: string,
+    band?: string,
+    release?: Date,
+}
+```
+
+### DELETE `/album/:id`
+
+Deleta um álbum a partir do id informado.
+
+Retorno: Objeto do álbum deletado.
+
+</br></br>
+
+### GET `/`
+
+Retorno: Listagem das rotas disponíveis além de informações da API e do autor.

@@ -43,13 +43,12 @@ app.listen(PORT, () => {
     console.log(
         `Server started on port: ${PORT}
 
-Avaliable routes
+Avaliable resources
 
 /healthcheck
 /album
 /band
 /user
-/user/login
 /
 `
     );

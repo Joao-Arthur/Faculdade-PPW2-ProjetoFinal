@@ -45,8 +45,8 @@ type putBand = {
     _id?: string;
     name?: string;
     members?: string[];
-    foundation?: Number;
-    dissolution?: Number;
+    foundation?: number;
+    dissolution?: number;
     albums?: string[];
 };
 
@@ -86,8 +86,8 @@ router.put('/', async (req: Request<{}, {}, putBand>, res) => {
 type postBand = {
     name?: string;
     members?: string[];
-    foundation?: Number;
-    dissolution?: Number;
+    foundation?: number;
+    dissolution?: number;
     albums?: string[];
 };
 

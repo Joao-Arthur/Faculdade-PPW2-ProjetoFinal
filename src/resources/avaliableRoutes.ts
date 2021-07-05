@@ -5,37 +5,22 @@ router.get('/', (req, res) => {
     const url = `${req.protocol}://${req.get('host')}`;
     res.send({
         routes: {
-            healthcheck: {
-                queryParams: [],
-                url: `${url}/healthcheck`
-            },
-            band: {
-                queryParams: [
-                    'name',
-                    'activeAt',
-                    'foundation',
-                    'dissolution',
-                    'album',
-                    'song'
-                ],
-                url: `${url}/band`
-            },
-            album: {
-                queryParams: ['title', 'band', 'song', 'release'],
-                url: `${url}/album`
-            },
-            user: {
-                'sign up': `${url}/user`,
-                login: `${url}/user/login`
-            }
+            [`${url}/healthcheck`]: ['GET'],
+            [`${url}/band`]: ['GET', 'POST', 'PUT'],
+            [`${url}/band/:id`]: ['GET', 'DELETE'],
+            [`${url}/album`]: ['GET', 'POST', 'PUT'],
+            [`${url}/album/:id`]: ['GET', 'DELETE'],
+            [`${url}/user`]: ['POST'],
+            [`${url}/user/login`]: ['POST']
         },
-        api: {
-            versao: '1.0',
-            url: 'https://github.com/Joao-Arthur/Faculdade-PPW2-ProjetoFinal'
+        API: {
+            version: '1.0',
+            github: 'https://github.com/Joao-Arthur/Faculdade-PPW2-ProjetoFinal',
+            about: 'More details about the API on the README file'
         },
-        autor: {
-            nome: 'João Arthur',
-            url: 'https://github.com/Joao-Arthur/'
+        author: {
+            name: 'João Arthur',
+            github: 'https://github.com/Joao-Arthur/'
         }
     });
 });
