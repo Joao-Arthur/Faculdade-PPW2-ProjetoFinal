@@ -3,7 +3,10 @@
 ## Sobre o projeto
 
 Trabalho final da disciplina de programação para web 2 do curso de ciências da computação em 2021, desenvolvido em _Node JS_, _TS_ e _MongoDB_, utilizando a plataforma _Heroku_ para hospedagem em nuvem.
-Link do projeto no Heroku: https://projeto-final-ppw2.herokuapp.com
+
+Link do projeto no Heroku: https://projeto-final-ppw2.herokuapp.com (já removido)
+
+Nenhuma nova alteração será feita no projeto. Ele serve apenas como **fonte de consulta** e como **arquivo pessoal**.
 
 A API utiliza autenticação com token JWT para acessar os principais recursos.
 
